@@ -6,7 +6,7 @@
 /*   By: adechaji <adechaji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:31:49 by adechaji          #+#    #+#             */
-/*   Updated: 2025/01/24 23:25:26 by adechaji         ###   ########.fr       */
+/*   Updated: 2025/01/25 18:43:51 by adechaji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,22 @@
 # include <sys/wait.h>
 # include <errno.h>
 
-typedef struct	s_cmd
-{
-	char	*path;
-	char	**args;
-}	t_cmd;
-
 typedef struct s_ppx
 {
-	char	*file1;
-	char	*file2;
-	t_cmd	*cmd1;
-	t_cmd	*cmd2;
+	int		infile;
+	int		outfile;
+	int		pipefd[2];
+	pid_t	pid;
 }	t_ppx;
 
 //pipe utils
-int		pars_args(char **av, char **env, t_ppx *pipex);
-void	free_pipex(t_ppx *pipex);
-void	error_exit(const char *msg);
+void	error_exit(const char *message, int exit_code);
 void	free_darray(char **arr);
-void	free_cmd(t_cmd *cmd);
-// void	pipex_exec(t_ppx *pipex, char **env);
-void pipex_exec(int argc, char **argv, char **envp);
+char	*ft_strjoin_free(char *s1, char *s2, int to_free);
+void	parsmepls(char **av, char **env, t_ppx *pipex);
+char	*findcomms(char *cmd);
+char	**parse_command(const char *cmd);
+void	child_process(int infd, int outfd, const char *cmd, char **env);
 //utils
 int		ft_printf(const char *str, ...);
 char	**ft_split(char const *s);
@@ -55,4 +49,6 @@ void	*ft_calloc(size_t count, size_t size);
 void	ft_bzero(void *s, size_t n);
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
+void	ft_putstr_fd(char *s, int fd);
+
 #endif

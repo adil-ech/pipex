@@ -1,47 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleanexits.c                                       :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adechaji <adechaji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/22 22:11:01 by adechaji          #+#    #+#             */
-/*   Updated: 2025/01/25 18:51:18 by adechaji         ###   ########.fr       */
+/*   Created: 2024/10/29 21:19:19 by adechaji          #+#    #+#             */
+/*   Updated: 2025/01/25 17:33:25 by adechaji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-char	*ft_strjoin_free(char *s1, char *s2, int to_free)
-{
-	char	*result;
-
-	result = ft_strjoin(s1, s2);
-	if (to_free == 1 || to_free == 3)
-		free(s1);
-	if (to_free == 2 || to_free == 3)
-		free(s2);
-	return (result);
-}
-
-void	error_exit(const char *message, int exit_code)
-{
-	perror (message);
-	exit (exit_code);
-}
-
-void	free_darray(char **arr)
+void	ft_putstr_fd(char *s, int fd)
 {
 	int	i;
 
 	i = 0;
-	if (arr)
+	if (!s)
+		return ;
+	while (s[i])
 	{
-		while (arr[i])
-		{
-			free(arr[i]);
-			i++;
-		}
+		write(fd, &s[i], 1);
+		i++;
 	}
-	free(arr);
 }

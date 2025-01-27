@@ -6,27 +6,53 @@
 /*   By: adechaji <adechaji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:31:21 by adechaji          #+#    #+#             */
-/*   Updated: 2025/01/24 23:34:04 by adechaji         ###   ########.fr       */
+/*   Updated: 2025/01/27 17:27:38 by adechaji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	f()
+static void	fprocess(char **av, t_ppx *pipex)
 {
-	system("leaks pipex");
+	pipex->infile = open(av[1], O_RDONLY);
+	if (pipex->infile == -1)
+	{
+		ft_putstr_fd("Error: couldnt open the infile. continuing...\n", 2);
+		pipex->infile = open("/dev/null", O_RDONLY);
+		if (pipex->infile == -1)
+			error_exit("Failed to open /dev/null", 1);
+	}
+	pipex->outfile = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pipex->outfile == -1)
+	{
+		close(pipex->infile);
+		error_exit("Error opening outfile", 1);
+	}
+	if (pipe(pipex->pipefd) == -1)
+	{
+		close(pipex->infile);
+		close(pipex->outfile);
+		error_exit("Pipe creation failed", 1);
+	}
 }
-int main(int ac, char **av, char **envp)
+void f()
+{
+	system("lsof -c ./pipex");
+}
+
+int	main(int ac, char **av, char **env)
 {
 	atexit(f);
-	t_ppx pipex;
+	t_ppx	pipex;
 
 	if (ac != 5)
 	{
-		ft_printf("Invalid arguments\n");
-		exit(EXIT_FAILURE);
+		ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2);
+		return (1);
 	}
-	pipex_exec(ac, av, envp);
-	free_pipex(&pipex);
-	return (EXIT_SUCCESS);
+	fprocess(av, &pipex);
+	parsmepls(av, env, &pipex);
+	close(pipex.infile);
+	close(pipex.outfile);
+	return (0);
 }
