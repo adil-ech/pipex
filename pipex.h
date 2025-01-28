@@ -6,7 +6,7 @@
 /*   By: adechaji <adechaji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:31:49 by adechaji          #+#    #+#             */
-/*   Updated: 2025/01/25 18:43:51 by adechaji         ###   ########.fr       */
+/*   Updated: 2025/01/28 17:33:02 by adechaji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define PIPEX_H
 
 # include <stdlib.h>
-# include <unistd.h>
 # include <stdio.h>
+# include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <errno.h>
@@ -31,11 +31,12 @@ typedef struct s_ppx
 //pipe utils
 void	error_exit(const char *message, int exit_code);
 void	free_darray(char **arr);
-char	*ft_strjoin_free(char *s1, char *s2, int to_free);
+char	*ft_strjoin_free(char *s1, char *s2);
 void	parsmepls(char **av, char **env, t_ppx *pipex);
 char	*findcomms(char *cmd);
 char	**parse_command(const char *cmd);
 void	child_process(int infd, int outfd, const char *cmd, char **env);
+void	pidfail(t_ppx *pipex);
 //utils
 int		ft_printf(const char *str, ...);
 char	**ft_split(char const *s);

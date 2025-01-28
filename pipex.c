@@ -6,7 +6,7 @@
 /*   By: adechaji <adechaji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:31:21 by adechaji          #+#    #+#             */
-/*   Updated: 2025/01/27 17:27:38 by adechaji         ###   ########.fr       */
+/*   Updated: 2025/01/28 17:43:57 by adechaji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,9 @@ static void	fprocess(char **av, t_ppx *pipex)
 		error_exit("Pipe creation failed", 1);
 	}
 }
-void f()
-{
-	system("lsof -c ./pipex");
-}
 
 int	main(int ac, char **av, char **env)
 {
-	atexit(f);
 	t_ppx	pipex;
 
 	if (ac != 5)

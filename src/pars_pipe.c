@@ -6,7 +6,7 @@
 /*   By: adechaji <adechaji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:29:52 by adechaji          #+#    #+#             */
-/*   Updated: 2025/01/26 17:10:57 by adechaji         ###   ########.fr       */
+/*   Updated: 2025/01/28 17:33:39 by adechaji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*findynorm(char *cmd)
 	while (paths[i])
 	{
 		cmd_path = ft_strjoin(paths[i], "/");
-		cmd_path = ft_strjoin_free(cmd_path, cmd, 1);
+		cmd_path = ft_strjoin_free(cmd_path, cmd);
 		if (access(cmd_path, X_OK) == 0)
 		{
 			free_darray(paths);
@@ -78,6 +78,8 @@ void	parsprocess(char **av, char **env, t_ppx *pipex)
 		waitpid(pipex->pid, NULL, 0);
 		close(pipex->pipefd[1]);
 		pipex->pid = fork();
+		if (pipex->pid == -1)
+			pidfail(pipex);
 		if (pipex->pid == 0)
 		{
 			child_process(pipex->pipefd[0], pipex->outfile, av[3], env);
@@ -95,12 +97,6 @@ void	parsmepls(char **av, char **env, t_ppx *pipex)
 {
 	pipex->pid = fork();
 	if (pipex->pid == -1)
-	{
-		close(pipex->infile);
-		close(pipex->outfile);
-		close(pipex->pipefd[0]);
-		close(pipex->pipefd[1]);
-		error_exit("Fork failed", 1);
-	}
+		pidfail(pipex);
 	parsprocess(av, env, pipex);
 }
