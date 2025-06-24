@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/75a4df04-fc52-4d9a-b1de-64ab54f7330b)
+
+
 # 🔗 Pipex
 
 `pipex` is a system-level programming project in the 42 curriculum. It focuses on using pipes, process forking, and file descriptor redirection to mimic shell behavior in executing a series of commands.
